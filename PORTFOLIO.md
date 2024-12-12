@@ -1,133 +1,167 @@
-# Portfolio
-## Tâche 0 : Formation de l'équipe 🤝
-### Questions de formation :
+# 📘 Rubik'scape - Projet de Fin d'Année XR
 
-1. Quelles sont les forces et compétences individuelles de chaque membre ?  
-```to fill```
-2. Comment nos compétences complémentaires peuvent-elles contribuer au projet ?  
-```to fill```
-3. Qui serait le mieux placé pour quel rôle initial ?  
-```to fill```
-4. Comment allons-nous communiquer efficacement ?  
-```to fill```
-5. Quels outils de communication et de collaboration utiliserons-nous ?  
-```to fill```
-6. Comment prendrons-nous des décisions ensemble ?  
-```to fill```
-7. Comment gérerons-nous les potentiels conflits ?  
-```to fill```
+## 0. Team Formation
 
-## Tâche 1 : Recherche et Brainstorming 🧠
-### Questions de recherche :
+### 👥 Membres de l'Équipe
+- **Développeur 1 : XR Technical Lead**
+- **Développeur 2 : Game Design & UX Specialist**
 
-1. Quels sont les problèmes réels actuels dans différents secteurs ?  
-```to fill```
-2. Quelles tendances technologiques ou industrielles émergentes pourraient inspirer notre projet ?  
-```to fill```
-3. Où pouvons-nous trouver des sources d'inspiration innovantes ?  
-```to fill```
+### 🤝 Réunion Initiale
+```Done```
 
-### Questions de brainstorming :
+### 🎯 Attribution des Rôles
+- **Développeur 1 (XR Technical Lead)**
+ * Responsable technique
+ * Développement des interactions VR
+ * Gestion des aspects techniques Meta XR SDK
 
-1. Comment pouvons-nous utiliser la technique du mind mapping ?  
-```to fill```
-2. Quelles idées pouvons-nous substituer, combiner, adapter ou modifier ?  
-```to fill```
-3. Comment formuler nos "How Might We" questions ?  
-```to fill```
-4. Quels sont nos domaines d'intérêt communs ?  
-```to fill```
-5. Quels problèmes voulons-nous résoudre ?  
-```to fill```
+- **Développeur 2 (Game Design & UX)**
+ * Design du jeu
+ * Expérience utilisateur
+ * Design graphique et interactions
 
-## Tâche 2 : Évaluation des Idées 🔍
-### Questions de critères d'évaluation :
+### 👔 Rôle de Coordination Temporaire
+- **Project Manager Temporaire** : Développeur 1
+ * Coordination des réunions
+ * Suivi du planning
+ * Gestion des livrables
 
-1. Quelle est la faisabilité technique de chaque idée ?  
-```to fill```
-2. Quel est l'impact potentiel de chaque concept ?  
-```to fill```
-3. Comment pouvons-nous noter objectivement nos idées ?  
-```to fill```
-4. Quels risques sont associés à chaque proposition ?  
-```to fill```
-5. Quelles sont nos contraintes de ressources ?  
-```to fill```
-6. Notre idée est-elle scalable ?  
-```to fill```
-7. Correspond-elle à nos compétences et intérêts ?  
-```to fill```
+### 🛠️ Outils de Communication et Collaboration
+- Slack : Communication quotidienne
+- Discord : Réunions vocales et partage
+- Trello : Gestion de projet
+- Github : Versionnage et collaboration
 
-## Tâche 3 : Décision et Affinage 🎯
-### Questions de sélection :
+## 1. Recherche et Remue-méninges
 
-1. Quel MVP répond le mieux à nos critères ?  
-```to fill```
-2. Quel problème précis notre MVP va-t-il résoudre ?  
-```Le MVP vise à proposer une version jouable d'un point de vu technique```
-3. Qui sont nos utilisateurs cibles ?  
-```Les amateurs de puzzle, de XR et ceux qui découvrent cet environnement```
-4. Quelles sont les fonctionnalités clés ?  
+### 📚 Recherche Individuelle
+
+#### Tendances Technologiques
+1. **Réalité Augmentée (XR)**
+   - Croissance dans l'éducation et les jeux
+   - Progression des technologies d'interaction
+   - Démocratisation des appareils XR
+
+2. **Jeux Éducatifs Interactifs**
+   - Apprentissage par le jeu
+   - Importance de l'engagement cognitif
+   - Personnalisation des expériences
+
+### 🧠 Mind Mapping
 ```
-- Écran d'Accueil
-
-    Interface utilisateur en réalité augmentée
-    Design épuré et intuitif
-    Options principales :
-    Nouvelle partie
-    Paramètres
-    Quitter le jeu
-
-- Rubik's Cube Fonctionnel
-
-    - Système de Rotation
-        Rotation libre dans l'espace 3D
-        Contraintes de connexion intelligentes
-        Validation en temps réel des chemins
-
-    - Points Clés
-        Modèle 3D précis du cube
-        Système de collision entre tuiles
-        Vérification automatique des connexions de chemin
-        Interactions intuitives via contrôleurs XR
-
-- Système de Déplacement
-
-    - Caractéristiques Principales
-        Navigation automatique basée sur NavMesh
-        Adaptation dynamique au chemin créé
-        Gestion des intersections et embranchements
-
-    - Mécanismes de Déplacement
-        Bouton "Run" pour lancer le mouvement
-        Arrêt automatique si chemin invalide
-        Suivi précis de la trajectoire définie
-        Feedback visuel du déplacement
+Rubik'scape
+│
+├── Technologies
+│   ├── Réalité Augmentée
+│   ├── Interactions Gestuelles
+│   └── Unity XR SDK
+│
+├── Mécaniques de Jeu
+│   ├── Construction de Chemins
+│   ├── Résolution de Puzzles
+│   └── Progression Dynamique
+│
+├── Objectifs Pédagogiques
+│   ├── Logique Spatiale
+│   ├── Pensée Algorithmique
+│   └── Résolution de Problèmes
+│
+└── Publics Cibles
+├── Enfants (8-12 ans)
+├── Étudiants
+└── Passionnés de Puzzles
 ```
-5. Quels résultats attendons-nous ?  
-```Au minimum la réalisation du MVP, si possible rajouter les points suivants: to fill```
 
-## Tâche 4 : Documentation 📝
-### Questions de documentation :
+### ❓ Questions "Comment Pourrions-Nous"
+1. Transformer un puzzle statique en expérience interactive
+2. Rendre l'apprentissage de la logique amusant
+3. Adapter le jeu à différents niveaux de compétence
 
-1. Comment avons-nous documenté notre processus de réflexion ?  
-```to fill```
-2. Avons-nous expliqué clairement pourquoi certaines idées ont été rejetées ?  
-```to fill```
-3. Notre documentation montre-t-elle notre processus de pensée ?  
-```to fill```
-4. Avons-nous bien détaillé la justification de notre choix final ?  
-```to fill```
-5. Notre rapport reflète-t-il la diversité des perspectives de l'équipe ?  
-```to fill```
+## 2. Évaluation des Idées
 
-### Questions transversales importantes
+### 📊 Critères d'Évaluation
+- Faisabilité Technique
+- Impact Potentiel
+- Alignement Stratégique
+- Scalabilité
 
-1. Comment s'assurer que chaque membre se sent écouté et valorisé ?  
-```to fill```
-2. Comment capitaliser sur la diversité des perspectives ?  
-```to fill```
-3. Comment maintenir une communication claire et transparente ?  
-```to fill```
-4. Si un MVP est pré-assigné, comment bien comprendre la vision des parties prenantes ?  
-```to fill```
+### 🏆 Grille de Notation
+
+| Critère | Pondération | Note | Commentaire |
+|---------|-------------|------|-------------|
+| Faisabilité | 30% | 4/5 | Technologies XR matures |
+| Impact | 25% | 5/5 | Forte valeur éducative |
+| Alignement | 20% | 4/5 | Correspond aux compétences |
+| Scalabilité | 25% | 5/5 | Nombreuses possibilités |
+| **Total** | 100% | **4.5/5** | Projet très prometteur |
+
+## 3. Décision et Raffinement
+
+### 🎯 Sélection du MVP
+
+#### Problème Résolu
+- Transformation de l'apprentissage de la logique en expérience ludique
+- Développement des compétences de résolution de problèmes
+
+#### Public Cible
+- Enfants et adolescents (8-16 ans)
+- Étudiants
+- Passionnés de puzzles
+
+#### Fonctionnalités Clés
+1. Rotation de cube en réalité augmentée
+2. Construction de chemins
+3. Niveaux de difficulté progressifs
+4. Feedback interactif
+5. Mode apprentissage
+
+## 4. Documentation du Développement
+
+### 📝 Idées Explorées
+1. **Jeu de Labyrinthe VR**
+   - Forces : Immersion
+   - Rejeté : Manque de profondeur pédagogique
+
+2. **Simulation de Logistique**
+   - Forces : Apprentissage pratique
+   - Rejeté : Manque d'engagement ludique
+
+### 🚀 Résumé du MVP
+- **Concept** : Rubik'scape - Puzzle interactif en réalité augmentée
+- **Objectif** : Rendre l'apprentissage de la logique amusant
+- **Impact** : Développement des compétences cognitives
+
+## 🛠️ Configuration Technique
+
+### Environnement de Développement
+- Unity 2022.3 LTS
+- Meta XR All-in-One SDK
+- XR Plug-in Management
+- Plateformes : Meta Quest 2, 3, 3S
+
+## 📅 Planning Détaillé
+
+### Timeline
+- **Début** : Décembre 2024
+- **Fin développement** : 15 mars 2025
+- **Présentation** : 21 mars 2025
+
+### Phases Principales
+1. Préparation & Conception
+2. Développement Core
+3. Design & Expérience Utilisateur
+4. Polissage & Tests
+
+## 🎓 Compétences Requises
+
+### Développeur 1 : XR Technical Lead
+- Unity 3D expert
+- Développement VR/AR
+- Algorithmes de pathfinding
+- Meta XR SDK
+
+### Développeur 2 : Game Design & UX
+- Design d'interfaces VR
+- Modélisation 3D
+- Conception d'expérience utilisateur
+- Animation de systèmes de jeu
