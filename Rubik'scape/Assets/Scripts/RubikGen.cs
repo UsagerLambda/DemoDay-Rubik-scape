@@ -26,10 +26,12 @@ public class RubikGen : MonoBehaviour
 
                     GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity); // clone le prefab (cubePrefab) avec la position, et aucune rotation
                     cube.transform.parent = transform; // Lie le cube à cet objet comme parent (et l'ajoute à sa hiérarchie)
-                    cube.name = $"Cube_{x}_{y}_{z}"; // Défini le nom du cube par ces coordonnées
+                    cube.name = $"Cube{x}{y}_{z}"; // Défini le nom du cube par ces coordonnées
                     cubeArray[x, y, z] = cube; // stocke la posiiton du cube dans le tableau 3D: cubeArray
                 }
             }
         }
     }
 }
+
+
