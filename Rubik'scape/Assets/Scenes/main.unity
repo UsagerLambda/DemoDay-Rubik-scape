@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeSize: 3
-  offset: 1.01
+  offset: 0.21
   cubePrefab: {fileID: 6615783070473671989, guid: 5c4c3d8d0a4c643ba89dc6a74337dfb2,
     type: 3}
   planePrefabs:
@@ -511,17 +511,17 @@ PrefabInstance:
     - target: {fileID: 2133607896253626307, guid: 9caa44979196446d6a3c9a5f9d632d38,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.005
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2133607896253626307, guid: 9caa44979196446d6a3c9a5f9d632d38,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.005
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2133607896253626307, guid: 9caa44979196446d6a3c9a5f9d632d38,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.005
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2133607896253626307, guid: 9caa44979196446d6a3c9a5f9d632d38,
         type: 3}
@@ -536,7 +536,7 @@ PrefabInstance:
     - target: {fileID: 2133607896253626307, guid: 9caa44979196446d6a3c9a5f9d632d38,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2133607896253626307, guid: 9caa44979196446d6a3c9a5f9d632d38,
         type: 3}
