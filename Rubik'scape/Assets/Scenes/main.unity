@@ -573,7 +573,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cubePrefab
       value: 
-      objectReference: {fileID: 6615783070473671989, guid: 5c4c3d8d0a4c643ba89dc6a74337dfb2,
+      objectReference: {fileID: 4026504276088752327, guid: 662f95fb8fe4810448b928a9c58d14f1,
         type: 3}
     - target: {fileID: 832640517525177022, guid: 9caa44979196446d6a3c9a5f9d632d38,
         type: 3}
