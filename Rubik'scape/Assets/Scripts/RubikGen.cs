@@ -1,71 +1,69 @@
 using UnityEngine;
 
 /// <summary>
-/// Classe responsable de la génération du Rubik's Cube et de sa configuration initiale
+/// Classe responsable de la génération du Rubik's Cube et de sa configuration initiale.
 /// </summary>
 public class RubikGen : MonoBehaviour
 {
     // Configuration visuelle et structurelle du cube
     [Header("Configuration du cube")]
-    public int cubeSize = 3;                    // Définit la taille du cube (3x3x3 par défaut)
-    public float offset = 1.0f;                 // Espace entre chaque petit cube
-    public GameObject cubePrefab;               // Préfab du petit cube à instancier
-    
+    public int cubeSize = 3;                    // Taille du cube (exemple : 3x3x3)
+    public float offset = 1.0f;                   // Espacement entre chaque petit cube
+    public GameObject cubePrefab;               // Préfab à instancier pour chaque petit cube
+
     // Configuration des propriétés physiques
     [Header("Configuration physique")]
     public float cubeWeight = 1f;               // Masse de chaque petit cube
     public PhysicMaterial cubeMaterial;         // Matériau physique pour les collisions
-    
-    // Variables privées pour le stockage des références
+
+    // Tableau 3D stockant toutes les références des cubes
     [HideInInspector]
-    public GameObject[,,] cubeArray;           // Tableau 3D stockant tous les cubes
+    public GameObject[,,] cubeArray;
 
     /// <summary>
-    /// Appelé au démarrage, initialise le Rubik's Cube
+    /// Appelé au démarrage, vérifie le préfab et génère le Rubik's Cube.
     /// </summary>
     void Start()
     {
-        // Vérifie que le préfab est bien assigné
         if (cubePrefab == null)
         {
             Debug.LogError("Cube Prefab non assigné dans RubikGen");
             return;
         }
-
-        GenerateRubiksCube();     // Génère la structure du cube
+        GenerateRubiksCube();
     }
 
     /// <summary>
-    /// Génère la structure complète du Rubik's Cube
+    /// Génère la structure complète du Rubik's Cube.
     /// </summary>
     void GenerateRubiksCube()
     {
-        // Initialise le tableau 3D
+        // Initialise le tableau 3D en fonction de la taille du cube
         cubeArray = new GameObject[cubeSize, cubeSize, cubeSize];
 
-        // Génère chaque cube individuel
+        // Boucle sur chaque dimension pour créer chaque petit cube
         for (int x = 0; x < cubeSize; x++)
         {
             for (int y = 0; y < cubeSize; y++)
             {
                 for (int z = 0; z < cubeSize; z++)
                 {
-                    // Calcule la position de chaque cube
+                    // Calcul de la position de chaque cube
                     float posX = (x - (cubeSize - 1) / 2f) * offset;
                     float posY = (y - (cubeSize - 1) / 2f) * offset;
                     float posZ = (z - (cubeSize - 1) / 2f) * offset;
                     Vector3 position = transform.position + new Vector3(posX, posY, posZ);
 
-                    // Crée et configure le cube
+                    // Instanciation du cube et configuration de ses paramètres
                     GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
                     cube.transform.parent = transform;
                     cube.name = $"Cube{x}{y}_{z}";
-                    cube.tag = "CubePiece"; // Ajoute le tag pour l'interaction
+                    cube.tag = "CubePiece"; // Permet l'interaction avec ce cube
 
-                    // Ajoute les composants physiques
+                    // Ajoute les composants physiques (collider et rigidbody)
                     AddPhysicsComponents(cube);
-                    
-                    // Stocke la référence
+
+                    // Stocke la référence du cube dans le tableau
                     cubeArray[x, y, z] = cube;
                 }
             }
@@ -73,21 +71,22 @@ public class RubikGen : MonoBehaviour
     }
 
     /// <summary>
-    /// Ajoute et configure les composants physiques sur un cube
+    /// Ajoute et configure les composants physiques sur un cube.
     /// </summary>
+    /// <param name="cube">Le GameObject du cube</param>
     private void AddPhysicsComponents(GameObject cube)
     {
-        // Ajoute et configure le collider
+        // Ajout d'un BoxCollider
         BoxCollider collider = cube.AddComponent<BoxCollider>();
         collider.size = Vector3.one;
         if (cubeMaterial != null)
             collider.material = cubeMaterial;
 
-        // Ajoute et configure le rigidbody
+        // Ajout d'un Rigidbody
         Rigidbody rb = cube.AddComponent<Rigidbody>();
         rb.mass = cubeWeight;
-        rb.useGravity = false;    // Désactive la gravité pour le contrôle manuel
-        rb.isKinematic = true;    // Active le mode cinématique pour le contrôle précis
-        rb.interpolation = RigidbodyInterpolation.Interpolate;  // Lisse le mouvement
+        rb.useGravity = false;    // Désactive la gravité
+        rb.isKinematic = true;    // Permet un contrôle manuel des mouvements
+        rb.interpolation = RigidbodyInterpolation.Interpolate;  // Lissage du mouvement
     }
 }

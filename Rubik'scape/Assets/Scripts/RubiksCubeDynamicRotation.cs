@@ -1,26 +1,36 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Classe qui gère l'interaction avec le Rubik's Cube en utilisant les contrôleurs XR.
+/// </summary>
 public class RubiksCubeInteraction : MonoBehaviour
 {
     [Header("Références")]
-    public RubikGen rubikGen;
-    public XRDirectInteractor leftHand;
-    public XRDirectInteractor rightHand;
-    
+    public RubikGen rubikGen;                   // Référence au script de génération du Rubik's Cube
+    public XRDirectInteractor leftHand;         // Interacteur pour la main gauche
+    public XRDirectInteractor rightHand;        // Interacteur pour la main droite
+
     [Header("Paramètres de rotation")]
-    public float rotationSpeed = 300f;
-    public float snapAngleThreshold = 45f;
-    
-    private GameObject selectedCube;
-    private GameObject[] selectedLayer;
-    private Vector3 rotationAxis;
-    private int currentLayer;
-    private bool isRotating;
-    private Vector3 previousHandPosition;
-    private Quaternion previousHandRotation;
-    private InteractionMode currentMode;
-    
+    public float rotationSpeed = 300f;          // Vitesse de rotation appliquée aux cubes
+    public float snapAngleThreshold = 45f;      // Seuil d'angle pour l'alignement (snap) des rotations
+
+    // Variables internes pour la gestion de l'interaction
+    private GameObject selectedCube;            // Cube sélectionné lors de la saisie
+    private GameObject[] selectedLayer;         // Ensemble de cubes formant la couche à faire tourner
+    private Vector3 rotationAxis;               // Axe autour duquel la couche sera tournée
+    private int currentLayer;                   // Indice de la couche sélectionnée
+    private bool isRotating;                    // Indique si une rotation est en cours
+    private Vector3 grabStartPosition;          // Position initiale de la main lors de la saisie
+    private Quaternion grabStartRotation;       // Rotation initiale lors de la saisie
+    private InteractionMode currentMode;        // Mode d'interaction en cours
+    private IXRSelectInteractable currentInteractable; // Objet interactif actuellement sélectionné
+    private Vector3 previousPosition;           // Position précédente de la main pour calculer le mouvement
+    private bool isGrabbing;                    // Indique si la main est en train de saisir
+
+    /// <summary>
+    /// Modes d'interaction possibles.
+    /// </summary>
     private enum InteractionMode
     {
         None,
@@ -28,122 +38,181 @@ public class RubiksCubeInteraction : MonoBehaviour
         LeftHandAxisBased
     }
 
+    /// <summary>
+    /// Initialisation des événements d'interaction.
+    /// </summary>
     private void Start()
     {
-        // Configuration des événements d'interaction
         SetupInteractionEvents();
     }
 
+    /// <summary>
+    /// Configure les événements pour les mains gauche et droite.
+    /// </summary>
     private void SetupInteractionEvents()
     {
-        rightHand.selectEntered.AddListener(OnRightHandSelectEntered);
-        rightHand.selectExited.AddListener(OnRightHandSelectExited);
-        leftHand.selectEntered.AddListener(OnLeftHandSelectEntered);
-        leftHand.selectExited.AddListener(OnLeftHandSelectExited);
+        // Événements pour la main gauche
+        leftHand.selectEntered.AddListener(OnLeftHandGrab);
+        leftHand.selectExited.AddListener(OnLeftHandRelease);
+
+        // Événements pour la main droite
+        rightHand.selectEntered.AddListener(OnRightHandGrab);
+        rightHand.selectExited.AddListener(OnRightHandRelease);
     }
 
-    private void OnRightHandSelectEntered(SelectEnterEventArgs args)
+    /// <summary>
+    /// Gère la saisie avec la main droite.
+    /// </summary>
+    /// <param name="args">Arguments de l'événement de saisie</param>
+    private void OnRightHandGrab(SelectEnterEventArgs args)
     {
         if (currentMode != InteractionMode.None) return;
-        
-        GameObject grabbed = args.interactableObject.transform.gameObject;
-        if (grabbed.CompareTag("CubePiece")) // Vérifie si c'est un morceau du cube
+
+        var grabbedObj = args.interactableObject.transform.gameObject;
+        if (grabbedObj.CompareTag("CubePiece"))
         {
             currentMode = InteractionMode.RightHandClassic;
-            selectedCube = grabbed;
-            previousHandRotation = rightHand.transform.rotation;
+            // Le XR Toolkit gère le déplacement avec la main droite
         }
     }
 
-    private void OnRightHandSelectExited(SelectExitEventArgs args)
+    /// <summary>
+    /// Gère le relâchement de la main droite.
+    /// </summary>
+    /// <param name="args">Arguments de l'événement de relâchement</param>
+    private void OnRightHandRelease(SelectExitEventArgs args)
     {
         if (currentMode == InteractionMode.RightHandClassic)
         {
             currentMode = InteractionMode.None;
-            selectedCube = null;
             SnapToNearestRotation();
         }
     }
 
-    private void OnLeftHandSelectEntered(SelectEnterEventArgs args)
+    /// <summary>
+    /// Gère la saisie avec la main gauche.
+    /// </summary>
+    /// <param name="args">Arguments de l'événement de saisie</param>
+    private void OnLeftHandGrab(SelectEnterEventArgs args)
     {
         if (currentMode != InteractionMode.None) return;
-        
-        GameObject grabbed = args.interactableObject.transform.gameObject;
-        if (grabbed.CompareTag("CubePiece"))
+
+        var grabbedObj = args.interactableObject.transform.gameObject;
+        if (grabbedObj.CompareTag("CubePiece"))
         {
             currentMode = InteractionMode.LeftHandAxisBased;
-            selectedCube = grabbed;
-            
-            (rotationAxis, currentLayer) = GetCubeAxisAndLayer(grabbed);
+            selectedCube = grabbedObj;
+            currentInteractable = args.interactableObject;
+
+            // Stockage de la position initiale de la main
+            grabStartPosition = leftHand.transform.position;
+            previousPosition = grabStartPosition;
+
+            // Détermination de l'axe de rotation et de l'indice de la couche à partir du cube saisi
+            (rotationAxis, currentLayer) = GetCubeAxisAndLayer(grabbedObj);
+            // Récupère tous les cubes appartenant à la couche sélectionnée
             selectedLayer = GetLayerCubes(rotationAxis, currentLayer);
-            
-            previousHandPosition = leftHand.transform.position;
+
+            // Désactivation temporaire du suivi (tracking) de position et rotation pour éviter les interférences
+            var grabInteractable = grabbedObj.GetComponent<XRGrabInteractable>();
+            if (grabInteractable != null)
+            {
+                grabInteractable.trackPosition = false;
+                grabInteractable.trackRotation = false;
+            }
+
+            isGrabbing = true;
         }
     }
 
-    private void OnLeftHandSelectExited(SelectExitEventArgs args)
+    /// <summary>
+    /// Gère le relâchement de la main gauche.
+    /// </summary>
+    /// <param name="args">Arguments de l'événement de relâchement</param>
+    private void OnLeftHandRelease(SelectExitEventArgs args)
     {
         if (currentMode == InteractionMode.LeftHandAxisBased)
         {
-            currentMode = InteractionMode.None;
-            selectedCube = null;
-            selectedLayer = null;
+            // Réactive le suivi de position et rotation pour l'objet saisi
+            if (selectedCube != null)
+            {
+                var grabInteractable = selectedCube.GetComponent<XRGrabInteractable>();
+                if (grabInteractable != null)
+                {
+                    grabInteractable.trackPosition = true;
+                    grabInteractable.trackRotation = true;
+                }
+            }
+
+            // Ajuste la rotation de la couche à l'angle le plus proche
             SnapToNearestRotation();
+            ResetLeftHandState();
         }
     }
 
+    /// <summary>
+    /// Réinitialise l'état de l'interaction pour la main gauche après le relâchement.
+    /// </summary>
+    private void ResetLeftHandState()
+    {
+        currentMode = InteractionMode.None;
+        selectedCube = null;
+        selectedLayer = null;
+        currentInteractable = null;
+        isGrabbing = false;
+    }
+
+    /// <summary>
+    /// Met à jour la rotation en fonction du déplacement de la main gauche.
+    /// </summary>
     private void Update()
     {
-        if (currentMode == InteractionMode.RightHandClassic)
-        {
-            HandleClassicRotation();
-        }
-        else if (currentMode == InteractionMode.LeftHandAxisBased)
+        if (currentMode == InteractionMode.LeftHandAxisBased && isGrabbing)
         {
             HandleAxisBasedRotation();
         }
     }
 
-    private void HandleClassicRotation()
-    {
-        if (selectedCube == null) return;
-
-        Quaternion deltaRotation = Quaternion.Inverse(previousHandRotation) * 
-                                 rightHand.transform.rotation;
-        
-        selectedCube.transform.rotation *= deltaRotation;
-        previousHandRotation = rightHand.transform.rotation;
-    }
-
+    /// <summary>
+    /// Gère la rotation de la couche en se basant sur le déplacement de la main gauche.
+    /// </summary>
     private void HandleAxisBasedRotation()
     {
         if (selectedLayer == null || selectedLayer.Length == 0) return;
 
-        Vector3 currentHandPosition = leftHand.transform.position;
-        Vector3 movement = currentHandPosition - previousHandPosition;
-        
-        Vector3 projectedMovement = Vector3.ProjectOnPlane(movement, rotationAxis);
-        
-        float rotationAmount = projectedMovement.magnitude * rotationSpeed * 
-                             Mathf.Sign(Vector3.Dot(projectedMovement, 
-                             Vector3.Cross(rotationAxis, Vector3.up)));
+        Vector3 currentPosition = leftHand.transform.position;
+        Vector3 movement = currentPosition - previousPosition;
 
+        // Projection du mouvement sur le plan perpendiculaire à l'axe de rotation
+        Vector3 projectedMovement = Vector3.ProjectOnPlane(movement, rotationAxis);
+
+        // Calcul de l'angle de rotation en fonction de la distance parcourue
+        float rotationAmount = projectedMovement.magnitude * rotationSpeed;
+
+        // Détermination du sens de rotation
+        Vector3 cross = Vector3.Cross(rotationAxis, projectedMovement);
+        float direction = Vector3.Dot(cross, Vector3.up);
+        rotationAmount *= Mathf.Sign(direction);
+
+        // Applique la rotation à chaque cube de la couche sélectionnée
         foreach (GameObject cube in selectedLayer)
         {
             if (cube != null)
             {
                 cube.transform.RotateAround(
-                    rubikGen.transform.position,
-                    rotationAxis,
-                    rotationAmount
+                    rubikGen.transform.position, // Point autour duquel tourner
+                    rotationAxis,                // Axe de rotation
+                    rotationAmount               // Angle de rotation
                 );
             }
         }
 
-        previousHandPosition = currentHandPosition;
+        previousPosition = currentPosition;
     }
 
+    /// <summary>
+    /// Ajuste la rotation de chaque cube de la couche pour qu'elle soit un multiple de 90°.
+    /// </summary>
     private void SnapToNearestRotation()
     {
         if (selectedLayer == null) return;
@@ -163,79 +232,63 @@ public class RubiksCubeInteraction : MonoBehaviour
         }
     }
 
-    private GameObject[] GetLayerCubes(Vector3 axis, int layerIndex)
+    /// <summary>
+    /// Détermine l'axe de rotation et l'indice de la couche en fonction du cube sélectionné.
+    /// Cette méthode est un exemple simple utilisant la position Y du cube.
+    /// </summary>
+    /// <param name="cube">Le cube sélectionné</param>
+    /// <returns>Un tuple contenant l'axe de rotation (Vector3) et l'indice de la couche (int)</returns>
+    private (Vector3, int) GetCubeAxisAndLayer(GameObject cube)
     {
-        GameObject[] layerCubes = new GameObject[rubikGen.cubeSize * rubikGen.cubeSize];
-        int index = 0;
+        // Ici, on choisit l'axe vertical (Y) pour la rotation.
+        // La position locale en Y du cube par rapport au Rubik's Cube est utilisée pour déterminer la couche.
+        int layerIndex = 0;
+        Vector3 localPos = rubikGen.transform.InverseTransformPoint(cube.transform.position);
 
-        if (axis == Vector3.right)
+        // Seuil d'évaluation de la position en Y (à ajuster en fonction de votre configuration)
+        float threshold = 0.5f;
+        if (localPos.y > threshold)
         {
-            for (int y = 0; y < rubikGen.cubeSize; y++)
-                for (int z = 0; z < rubikGen.cubeSize; z++)
-                    layerCubes[index++] = rubikGen.cubeArray[layerIndex, y, z];
+            layerIndex = rubikGen.cubeSize - 1; // Couche supérieure
         }
-        else if (axis == Vector3.up)
+        else if (localPos.y < -threshold)
         {
-            for (int x = 0; x < rubikGen.cubeSize; x++)
-                for (int z = 0; z < rubikGen.cubeSize; z++)
-                    layerCubes[index++] = rubikGen.cubeArray[x, layerIndex, z];
+            layerIndex = 0; // Couche inférieure
         }
-        else if (axis == Vector3.forward)
+        else
         {
-            for (int x = 0; x < rubikGen.cubeSize; x++)
-                for (int y = 0; y < rubikGen.cubeSize; y++)
-                    layerCubes[index++] = rubikGen.cubeArray[x, y, layerIndex];
+            layerIndex = 1; // Couche du milieu
         }
 
-        return layerCubes;
+        return (Vector3.up, layerIndex);
     }
 
-    private (Vector3 axis, int layer) GetCubeAxisAndLayer(GameObject cube)
+    /// <summary>
+    /// Récupère tous les cubes d'une couche donnée en parcourant le tableau 3D du Rubik's Cube.
+    /// Cette implémentation utilise l'axe Y pour déterminer l'appartenance à une couche.
+    /// </summary>
+    /// <param name="axis">L'axe de rotation (non utilisé ici car l'exemple est basé sur Y)</param>
+    /// <param name="layerIndex">L'indice de la couche</param>
+    /// <returns>Un tableau de GameObject correspondant à la couche sélectionnée</returns>
+    private GameObject[] GetLayerCubes(Vector3 axis, int layerIndex)
     {
-        // On récupère la position du cube dans la grille en parcourant le cubeArray
-        for (int x = 0; x < rubikGen.cubeSize; x++)
-        {
-            for (int y = 0; y < rubikGen.cubeSize; y++)
-            {
-                for (int z = 0; z < rubikGen.cubeSize; z++)
-                {
-                    if (rubikGen.cubeArray[x, y, z] == cube)
-                    {
-                        // Détermine l'axe basé sur la position de la main par rapport au centre
-                        Vector3 relativePos = cube.transform.position - rubikGen.transform.position;
-                        Vector3 absPos = new Vector3(
-                            Mathf.Abs(relativePos.x),
-                            Mathf.Abs(relativePos.y),
-                            Mathf.Abs(relativePos.z)
-                        );
+        int cubeSize = rubikGen.cubeSize;
+        System.Collections.Generic.List<GameObject> layerCubes = new System.Collections.Generic.List<GameObject>();
 
-                        // Trouve l'axe le plus éloigné du centre
-                        if (absPos.x > absPos.y && absPos.x > absPos.z)
-                            return (Vector3.right, x);
-                        else if (absPos.y > absPos.z)
-                            return (Vector3.up, y);
-                        else
-                            return (Vector3.forward, z);
+        // Parcourt tous les cubes et ajoute ceux dont l'indice Y correspond à la couche sélectionnée
+        for (int x = 0; x < cubeSize; x++)
+        {
+            for (int y = 0; y < cubeSize; y++)
+            {
+                for (int z = 0; z < cubeSize; z++)
+                {
+                    if (y == layerIndex)
+                    {
+                        layerCubes.Add(rubikGen.cubeArray[x, y, z]);
                     }
                 }
             }
         }
-
-        return (Vector3.zero, -1);
-    }
-
-    private void OnDestroy()
-    {
-        if (rightHand != null)
-        {
-            rightHand.selectEntered.RemoveListener(OnRightHandSelectEntered);
-            rightHand.selectExited.RemoveListener(OnRightHandSelectExited);
-        }
-        
-        if (leftHand != null)
-        {
-            leftHand.selectEntered.RemoveListener(OnLeftHandSelectEntered);
-            leftHand.selectExited.RemoveListener(OnLeftHandSelectExited);
-        }
+        return layerCubes.ToArray();
     }
 }
