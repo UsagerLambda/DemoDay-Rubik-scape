@@ -8,7 +8,7 @@ public class RubiksAPIManager : MonoBehaviour
     public FetchCanvas dataReceiver { get; set; }
     private const string BaseUrl = "https://rubiks-server.onrender.com";
 
-    public IEnumerator GetAllLevels()
+    public virtual IEnumerator GetAllLevels()
     {
         using (UnityWebRequest request = UnityWebRequest.Get($"{BaseUrl}/get_all_levels"))
         {
@@ -32,7 +32,7 @@ public class RubiksAPIManager : MonoBehaviour
         }
     }
 
-    public IEnumerator GetLevel(string levelId)
+    public virtual IEnumerator GetLevel(string levelId)
     {
         using (UnityWebRequest request = UnityWebRequest.Get($"{BaseUrl}/get_level/{levelId}"))
         {

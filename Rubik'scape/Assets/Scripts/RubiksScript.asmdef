@@ -1,0 +1,8 @@
+{
+    "name": "RubiksScript",
+    "references": [
+        "Oculus.VR",
+        "Oculus.Platform",
+        "Unity.TextMeshPro"
+    ]
+}
