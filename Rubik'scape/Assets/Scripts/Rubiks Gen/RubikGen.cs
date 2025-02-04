@@ -7,25 +7,48 @@ public class RubikGen : MonoBehaviour
     public GameObject cubePrefab;
     public GameObject[] planePrefabs;
     public Vector3 pathPrefabScale = Vector3.one;
-    private GameObject[,,] cubeArray;
+    public GameObject[,,] cubeArray;
 
     private int[][] facesData = new int[6][];
+    private bool isInitialized = false;
 
-    void Start()
+    public virtual void InitializeRubiksCube(string levelName, int levelSize, int[][] newFacesData)
     {
-        InitializeTestData(); // appel une fonction qui va initialiser des données dans la double list "facesData"
-        GenerateRubiksCube(); // Génération du Rubik's cube
-        ApplyPlanePrefabs(); // Change les faces visibles avec les données des tableaux dans "facesData"
+        if (isInitialized)
+        {
+            // Si déjà initialisé, nettoyer d'abord
+            CleanupCurrentCube();
+        }
+
+        cubeSize = levelSize;
+        facesData = newFacesData;
+
+        GenerateRubiksCube();
+        ApplyPlanePrefabs();
+        
+        isInitialized = true;
     }
 
-    void InitializeTestData()
+    private void CleanupCurrentCube()
     {
-        facesData[0] = new int[] { 1, 2, 3, 2, 1, 3, 2, 1, 3 }; // Face avant
-        facesData[1] = new int[] { 2, 1, 2, 3, 1, 2, 1, 3, 2 }; // Face arrière
-        facesData[2] = new int[] { 3, 2, 1, 1, 2, 3, 2, 1, 3 }; // Face gauche
-        facesData[3] = new int[] { 1, 3, 2, 2, 1, 3, 1, 2, 3 }; // Face droite
-        facesData[4] = new int[] { 2, 1, 3, 3, 2, 1, 1, 3, 2 }; // Face dessus
-        facesData[5] = new int[] { 3, 2, 1, 1, 3, 2, 2, 1, 3 }; // Face dessous
+        // Détruit tous les cubes existants
+        if (cubeArray != null)
+        {
+            for (int x = 0; x < cubeArray.GetLength(0); x++)
+            {
+                for (int y = 0; y < cubeArray.GetLength(1); y++)
+                {
+                    for (int z = 0; z < cubeArray.GetLength(2); z++)
+                    {
+                        if (cubeArray[x, y, z] != null)
+                        {
+                            Destroy(cubeArray[x, y, z]);
+                        }
+                    }
+                }
+            }
+        }
+        isInitialized = false;
     }
 
     void GenerateRubiksCube() {
@@ -59,7 +82,7 @@ public class RubikGen : MonoBehaviour
                 {
                     // Récupère le cube courant dans le tableau
                     GameObject cube = cubeArray[x, y, z];
-                    
+
                     // Parcourt toutes les faces de ce cube (front, back, top ect...)
                     foreach (Transform child in cube.transform)
                     {
@@ -148,7 +171,7 @@ public class RubikGen : MonoBehaviour
                                     child.position, // Position de l'ancienne face
                                     rotationOffset, // Rotation calculée
                                     child.parent); // Même parent que l'ancienne face
-                                
+
                                 // Ajuste l'échelle du nouveau plan
                                 newPlane.transform.localScale = Vector3.Scale(child.localScale, pathPrefabScale);
                                 // Supprime l'ancienne face

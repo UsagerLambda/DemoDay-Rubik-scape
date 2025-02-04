@@ -1,46 +1,57 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using Newtonsoft.Json;
 
 public class RubiksAPIManager : MonoBehaviour
 {
-    private string baseUrl = "https://rubiks-server.onrender.com";
+    public FetchCanvas dataReceiver { get; set; }
+    private const string BaseUrl = "https://rubiks-server.onrender.com";
 
     public IEnumerator GetAllLevels()
     {
-        string url = $"{baseUrl}/get_all_levels";
-        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        using (UnityWebRequest request = UnityWebRequest.Get($"{BaseUrl}/get_all_levels"))
         {
             yield return request.SendWebRequest();
 
-            if (request.result == UnityWebRequest.Result.Success)
+            if (request.result != UnityWebRequest.Result.Success)
             {
-                APIResponse response = JsonUtility.FromJson<APIResponse>(request.downloadHandler.text);
-                foreach (Level level in response.levels)
-                    Debug.Log($"Level: {level.name} (ID: {level.id})");
+                Debug.LogError($"Request failed: {request.error}");
+                yield break;
+            }
+
+            APIResponse response = JsonConvert.DeserializeObject<APIResponse>(request.downloadHandler.text);
+            if (dataReceiver != null)
+            {
+                dataReceiver.HandleAllLevels(response.levels);
             }
             else
-                Debug.LogError($"Request failed: {request.error}");
+            {
+                Debug.LogError("DataReceiver is not set in RubiksAPIManager");
+            }
         }
     }
 
     public IEnumerator GetLevel(string levelId)
     {
-        string url = $"{baseUrl}/get_level/{levelId}";
-        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        using (UnityWebRequest request = UnityWebRequest.Get($"{BaseUrl}/get_level/{levelId}"))
         {
             yield return request.SendWebRequest();
 
-            if (request.result == UnityWebRequest.Result.Success)
+            if (request.result != UnityWebRequest.Result.Success)
             {
-                APIResponse response = JsonUtility.FromJson<APIResponse>(request.downloadHandler.text);
-                Level level = response.level;
-                Debug.Log($"Loaded Level: {level.name}");
-                Debug.Log($"Cube size: {level.cube_size}");
-                Debug.Log($"Faces data: {level.faces_data}");
-            }
-            else
                 Debug.LogError($"Request failed: {request.error}");
+                yield break;
+            }
+
+            APIResponse response = JsonConvert.DeserializeObject<APIResponse>(request.downloadHandler.text);
+            if (response?.level == null)
+            {
+                Debug.LogError("Received null level from API");
+                yield break;
+            }
+
+            dataReceiver?.HandleSingleLevel(response.level);
         }
     }
 }
