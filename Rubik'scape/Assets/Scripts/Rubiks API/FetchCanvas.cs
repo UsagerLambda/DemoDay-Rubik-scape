@@ -12,6 +12,7 @@ public class FetchCanvas : MonoBehaviour
     [Header("Références Externes")]
     public RubiksAPIManager apiManager;
     public GameObject curvedUnityCanvas;
+    public GameObject finishMenu;
     public RubikGen rubikGen;
 
     public void Initialize(GameObject canvas, RubikGen gen) {
@@ -94,6 +95,7 @@ public class FetchCanvas : MonoBehaviour
                 Debug.Log($"Clé '{faceKey}' non trouvée dans faces_data.");
             }
         }
+        finishMenu.SetActive(true);
 
         // Initialise le Rubik's cube
         rubikGen.InitializeRubiksCube(level.name, level.cube_size, facesData);
