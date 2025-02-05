@@ -1,92 +1,186 @@
 using UnityEngine;
 
-/// <summary>
-/// Classe responsable de la génération du Rubik's Cube et de sa configuration initiale.
-/// </summary>
 public class RubikGen : MonoBehaviour
 {
-    // Configuration visuelle et structurelle du cube
-    [Header("Configuration du cube")]
-    public int cubeSize = 3;                    // Taille du cube (exemple : 3x3x3)
-    public float offset = 1.0f;                   // Espacement entre chaque petit cube
-    public GameObject cubePrefab;               // Préfab à instancier pour chaque petit cube
-
-    // Configuration des propriétés physiques
-    [Header("Configuration physique")]
-    public float cubeWeight = 1f;               // Masse de chaque petit cube
-    public PhysicMaterial cubeMaterial;         // Matériau physique pour les collisions
-
-    // Tableau 3D stockant toutes les références des cubes
-    [HideInInspector]
+    public int cubeSize = 3;
+    public float offset = 1.0f;
+    public GameObject cubePrefab;
+    public GameObject[] planePrefabs;
+    public Vector3 pathPrefabScale = Vector3.one;
     public GameObject[,,] cubeArray;
 
-    /// <summary>
-    /// Appelé au démarrage, vérifie le préfab et génère le Rubik's Cube.
-    /// </summary>
-    void Start()
+    private int[][] facesData = new int[6][];
+    private bool isInitialized = false;
+
+    public virtual void InitializeRubiksCube(string levelName, int levelSize, int[][] newFacesData)
     {
-        if (cubePrefab == null)
+        if (isInitialized)
         {
-            Debug.LogError("Cube Prefab non assigné dans RubikGen");
-            return;
+            // Si déjà initialisé, nettoyer d'abord
+            CleanupCurrentCube();
         }
+
+        cubeSize = levelSize;
+        facesData = newFacesData;
+
         GenerateRubiksCube();
+        ApplyPlanePrefabs();
+        
+        isInitialized = true;
     }
 
-    /// <summary>
-    /// Génère la structure complète du Rubik's Cube.
-    /// </summary>
-    void GenerateRubiksCube()
+    private void CleanupCurrentCube()
     {
-        // Initialise le tableau 3D en fonction de la taille du cube
-        cubeArray = new GameObject[cubeSize, cubeSize, cubeSize];
+        // Détruit tous les cubes existants
+        if (cubeArray != null)
+        {
+            for (int x = 0; x < cubeArray.GetLength(0); x++)
+            {
+                for (int y = 0; y < cubeArray.GetLength(1); y++)
+                {
+                    for (int z = 0; z < cubeArray.GetLength(2); z++)
+                    {
+                        if (cubeArray[x, y, z] != null)
+                        {
+                            Destroy(cubeArray[x, y, z]);
+                        }
+                    }
+                }
+            }
+        }
+        isInitialized = false;
+    }
 
-        // Boucle sur chaque dimension pour créer chaque petit cube
+    public void GenerateRubiksCube() {
+        cubeArray = new GameObject[cubeSize, cubeSize, cubeSize]; // Tableau 3D de taille cubeSize x cubeSize x cubeSize
+        for (int x = 0; x < cubeSize; x++) { // axe X (Largeur)
+            for (int y = 0; y < cubeSize; y++) { // axe Y (Profondeur)
+                for (int z = 0; z < cubeSize; z++) { // axe Z (Hauteur)
+                    // Calcul de la position d'un cube par rapport au 0, 0, 0 (x, y, z)
+                    float posX = (x - (cubeSize - 1) / 2f) * offset; // calcule la position x du cube
+                    float posY = (y - (cubeSize - 1) / 2f) * offset; // calcule la position y du cube
+                    float posZ = (z - (cubeSize - 1) / 2f) * offset; // calcule la position z du cube
+                    Vector3 position = transform.position + new Vector3(posX, posY, posZ); // récupère la position de l'objet parent avec transform.position et ajoute le décalage calculé
+
+                    GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity); // clone le prefab (cubePrefab) avec la position, et aucune rotation
+                    cube.transform.parent = transform; // Lie le cube à cet objet comme parent (et l'ajoute à sa hiérarchie)
+                    cube.name = $"Cube{x}{y}_{z}"; // Défini le nom du cube par ces coordonnées
+                    cubeArray[x, y, z] = cube; // stocke la posiiton du cube dans le tableau 3D: cubeArray
+                }
+            }
+        }
+    }
+
+    void ApplyPlanePrefabs()
+    {
+        // parcourt tous les cubes du Rubik's cube en 3D
         for (int x = 0; x < cubeSize; x++)
         {
             for (int y = 0; y < cubeSize; y++)
             {
                 for (int z = 0; z < cubeSize; z++)
                 {
-                    // Calcul de la position de chaque cube
-                    float posX = (x - (cubeSize - 1) / 2f) * offset;
-                    float posY = (y - (cubeSize - 1) / 2f) * offset;
-                    float posZ = (z - (cubeSize - 1) / 2f) * offset;
-                    Vector3 position = transform.position + new Vector3(posX, posY, posZ);
+                    // Récupère le cube courant dans le tableau
+                    GameObject cube = cubeArray[x, y, z];
 
-                    // Instanciation du cube et configuration de ses paramètres
-                    GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
-                    cube.transform.parent = transform;
-                    cube.name = $"Cube{x}{y}_{z}";
-                    cube.tag = "CubePiece"; // Permet l'interaction avec ce cube
+                    // Parcourt toutes les faces de ce cube (front, back, top ect...)
+                    foreach (Transform child in cube.transform)
+                    {
+                        // Initialisation des variables pour identifier la face
+                        bool isExteriorFace = false; // indique si c'est une face extérieure
+                        int faceIndex = -1; // Index de la face (0 = Front, 1 = Back, 2 = Left ect...)
+                        int planeIndex = -1; // Index spécifique de la face
+                        Quaternion rotationOffset = Quaternion.identity; // rotation à appliquer
 
-                    // Ajoute les composants physiques (collider et rigidbody)
-                    AddPhysicsComponents(cube);
+                        // vérifie chaque type de face et ses conditions pour être une face extérieure
+                        switch (child.name)
+                        {
+                            case "Front":
+                                // Identifie les cubes situés sur la face avant (dernière tranche en z)
+                                if (z == cubeSize - 1)
+                                {
+                                    isExteriorFace = true;
+                                    faceIndex = 0;
+                                    planeIndex = x + (y * cubeSize);
+                                    rotationOffset = Quaternion.Euler(-90, 180, 0);
+                                }
+                                break;
+                            case "Back":
+                                // Identifie les cubes situés sur la face arrière (première tranche en z)
+                                if (z == 0)
+                                {
+                                    isExteriorFace = true;
+                                    faceIndex = 1;
+                                    planeIndex = (cubeSize - 1 - x) + (y * cubeSize);
+                                    rotationOffset = Quaternion.Euler(-90, 0, 0);
+                                }
+                                break;
+                            case "Left":
+                                // Identifie les cubes situés sur la face gauche (première colonne en x)
+                                if (x == 0)
+                                {
+                                    isExteriorFace = true;
+                                    faceIndex = 2;
+                                    planeIndex = z + (y * cubeSize);
+                                    rotationOffset = Quaternion.Euler(-90, 90, 0);
+                                }
+                                break;
+                            case "Right":
+                                // Identifie les cubes situés sur la face droite (dernière colonne en x)
+                                if (x == cubeSize - 1)
+                                {
+                                    isExteriorFace = true;
+                                    faceIndex = 3;
+                                    planeIndex = (cubeSize - 1 - z) + (y * cubeSize);
+                                    rotationOffset = Quaternion.Euler(-90, -90, 0);
+                                }
+                                break;
+                            case "Top":
+                                // Identifie les cubes situés sur la face supérieure (dernière ligne en y)
+                                if (y == cubeSize - 1)
+                                {
+                                    isExteriorFace = true;
+                                    faceIndex = 4;
+                                    planeIndex = x + (z * cubeSize);
+                                    rotationOffset = Quaternion.Euler(0, 0, 0);
+                                }
+                                break;
+                            case "Bottom":
+                                // Identifie les cubes situés sur la face inférieure (première ligne en y)
+                                if (y == 0)
+                                {
+                                    isExteriorFace = true;
+                                    faceIndex = 5;
+                                    planeIndex = x + ((cubeSize - 1 - z) * cubeSize);
+                                    rotationOffset = Quaternion.Euler(-180, 0, 0);
+                                }
+                                break;
+                        }
 
-                    // Stocke la référence du cube dans le tableau
-                    cubeArray[x, y, z] = cube;
+                        // Si c'est une face extérieure valide
+                        if (isExteriorFace && faceIndex != -1 && planeIndex != -1)
+                        {
+                            // Récupère l'index du prefab à utiliser depuis facesData
+                            int prefabIndex = facesData[faceIndex][planeIndex];
+                            // Vérifie que l'index est valide
+                            if (prefabIndex >= 0 && prefabIndex < planePrefabs.Length)
+                            {
+                                // Crée une nouvelle instance de plan
+                                GameObject newPlane = Instantiate(
+                                    planePrefabs[prefabIndex], // Prefab choisi
+                                    child.position, // Position de l'ancienne face
+                                    rotationOffset, // Rotation calculée
+                                    child.parent); // Même parent que l'ancienne face
+
+                                // Ajuste l'échelle du nouveau plan
+                                newPlane.transform.localScale = Vector3.Scale(child.localScale, pathPrefabScale);
+                                // Supprime l'ancienne face
+                                Destroy(child.gameObject);
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// Ajoute et configure les composants physiques sur un cube.
-    /// </summary>
-    /// <param name="cube">Le GameObject du cube</param>
-    private void AddPhysicsComponents(GameObject cube)
-    {
-        // Ajout d'un BoxCollider
-        BoxCollider collider = cube.AddComponent<BoxCollider>();
-        collider.size = Vector3.one;
-        if (cubeMaterial != null)
-            collider.material = cubeMaterial;
-
-        // Ajout d'un Rigidbody
-        Rigidbody rb = cube.AddComponent<Rigidbody>();
-        rb.mass = cubeWeight;
-        rb.useGravity = false;    // Désactive la gravité
-        rb.isKinematic = true;    // Permet un contrôle manuel des mouvements
-        rb.interpolation = RigidbodyInterpolation.Interpolate;  // Lissage du mouvement
     }
 }
