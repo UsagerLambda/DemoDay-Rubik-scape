@@ -50,3 +50,4 @@ MonoBehaviour:
   cubeWeight: 1
   cubeMaterial: {fileID: 0}
   dynamicRotation: {fileID: 0}
+
