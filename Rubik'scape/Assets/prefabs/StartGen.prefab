@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.4571752, y: 0.67116064, z: 1.4523656}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -47,4 +47,6 @@ MonoBehaviour:
   cubeSize: 3
   offset: 1
   cubePrefab: {fileID: 0}
-  facePrefabs: []
+  cubeWeight: 1
+  cubeMaterial: {fileID: 0}
+  dynamicRotation: {fileID: 0}
