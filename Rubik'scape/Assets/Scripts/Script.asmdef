@@ -1,8 +1,0 @@
-{
-	"name": "Script",
-	"references": [
-		"Oculus.VR",
-		"Oculus.Plateform",
-		"Unity.TextMechPro"
-	]
-}
