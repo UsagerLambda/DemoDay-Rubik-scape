@@ -2317,7 +2317,7 @@ PrefabInstance:
     - target: {fileID: 8601274366942206311, guid: efb798694618643f0a40d5b97122991e,
         type: 3}
       propertyPath: planePrefabs.Array.size
-      value: 13
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8601274366942206311, guid: efb798694618643f0a40d5b97122991e,
         type: 3}
@@ -2390,6 +2390,18 @@ PrefabInstance:
       propertyPath: planePrefabs.Array.data[12]
       value: 
       objectReference: {fileID: 5520003115122581336, guid: 0b5ffb4f2ec844a4d9a8d8e3e0703166,
+        type: 3}
+    - target: {fileID: 8601274366942206311, guid: efb798694618643f0a40d5b97122991e,
+        type: 3}
+      propertyPath: planePrefabs.Array.data[13]
+      value: 
+      objectReference: {fileID: 8854552922164775871, guid: 03c52d6aaa7cf4412b15c440e436bfb6,
+        type: 3}
+    - target: {fileID: 8601274366942206311, guid: efb798694618643f0a40d5b97122991e,
+        type: 3}
+      propertyPath: planePrefabs.Array.data[14]
+      value: 
+      objectReference: {fileID: 155685946099796132, guid: 49992c43d59a64f6e8cd0c2c250fbae5,
         type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
