@@ -1702,6 +1702,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5252019315689852332, guid: 15bfd1335ace19a4481235a9b3c1052d,
+        type: 3}
+      propertyPath: _pointerPoseRoot
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5778427692192737682, guid: 15bfd1335ace19a4481235a9b3c1052d,
         type: 3}
       propertyPath: m_LocalPosition.x
