@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8258338283651946154}
   m_Layer: 3
   m_Name: check_direction_6
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 3977138740598903565}
   m_Layer: 3
   m_Name: check_direction_2
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 6465769447092325988}
   m_Layer: 3
   m_Name: check_direction_7
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 4685366162174341050}
   m_Layer: 3
   m_Name: check_direction_4
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 309619517991540679}
   m_Layer: 3
   m_Name: check_direction_3
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 4772629513075962661}
   m_Layer: 3
   m_Name: check_direction_1
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -310,7 +310,7 @@ GameObject:
   - component: {fileID: 806489014533446496}
   m_Layer: 3
   m_Name: check_direction_5
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

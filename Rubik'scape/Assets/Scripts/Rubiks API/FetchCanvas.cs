@@ -15,6 +15,7 @@ public class FetchCanvas : MonoBehaviour
     public GameObject rubikGenerator;
     public RubikGen rubikGen;
     public GameObject ChangeMode;
+    public GameObject SetPlayerPosition;
 
     public void Initialize(GameObject canvas, RubikGen gen) {
         curvedUnityCanvas = canvas;
@@ -98,6 +99,7 @@ public class FetchCanvas : MonoBehaviour
         }
         rubikGenerator.SetActive(true);
         ChangeMode.SetActive(true);
+        SetPlayerPosition.SetActive(true);
         // Initialise le Rubik's cube
         rubikGen.InitializeRubiksCube(level.name, level.cube_size, facesData);
     }

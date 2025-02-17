@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9201021576991987194}
   m_Layer: 3
   m_Name: check_direction_5
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4853500344328053398}
   m_Layer: 3
   m_Name: check_direction_6
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 3678137377203964770}
   m_Layer: 3
   m_Name: check_direction_7
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 6265530751232254057}
   m_Layer: 3
   m_Name: check_direction_8
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 133356984231547790}
   m_Layer: 3
   m_Name: check_direction_3
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 6712385153286291143}
   m_Layer: 3
   m_Name: check_direction_2
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 6660799563732646671}
   m_Layer: 3
   m_Name: check_direction_4
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 887304194093189973}
   m_Layer: 3
   m_Name: check_direction_9
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 2021158861825432714}
   m_Layer: 3
   m_Name: check_direction_1
-  m_TagString: EmptyObject
+  m_TagString: Point
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - end
   - start
+  - QDSUIToggleBorderlessButton
+  - EmptyObject
+  - Point
   layers:
   - Default
   - TransparentFX
