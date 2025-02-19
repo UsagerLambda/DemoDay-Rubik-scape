@@ -10,6 +10,7 @@ public class ScriptToggler : MonoBehaviour
     [SerializeField] private GameObject perso; // perso ref
     private MovementController movementController; // script déplacement perso
     private bool isRunning = false; // nouveau flag pour suivre l'état
+    public GameObject RubiksCube;
 
     private void Start()
     {
@@ -45,6 +46,12 @@ public class ScriptToggler : MonoBehaviour
             movementController.enabled = false; // Désactive le mouvement
             perso.transform.position = startTile.transform.position;
             perso.transform.parent = startTile.transform;
+
+            foreach (Transform child in RubiksCube.GetComponentsInChildren<Transform>(true)) {
+            if (child.CompareTag("Point") && !child.gameObject.activeSelf) {
+                child.gameObject.SetActive(true);
+            }
+        }
         }
 
         UpdateButtonText();

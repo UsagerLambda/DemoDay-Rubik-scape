@@ -97,11 +97,12 @@ public class FetchCanvas : MonoBehaviour
                 Debug.Log($"Clé '{faceKey}' non trouvée dans faces_data.");
             }
         }
+        Debug.Log("FetchCanvas : j'y suis !");
         rubikGenerator.SetActive(true);
         ChangeMode.SetActive(true);
-        SetPlayerPosition.SetActive(true);
         // Initialise le Rubik's cube
         rubikGen.InitializeRubiksCube(level.name, level.cube_size, facesData);
+        SetPlayerPosition.SetActive(true);
     }
 }
 
