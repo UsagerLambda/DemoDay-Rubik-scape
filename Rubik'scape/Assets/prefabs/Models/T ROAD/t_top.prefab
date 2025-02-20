@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 8370646418443736362}
   m_Layer: 0
   m_Name: t_top
-  m_TagString: Untagged
+  m_TagString: Tuile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

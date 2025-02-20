@@ -1218,6 +1218,55 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 464611518}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &297537664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 297537666}
+  - component: {fileID: 297537665}
+  m_Layer: 0
+  m_Name: perso.p
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &297537665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297537664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18d97ff5e61cfb4bb295a7025b20f5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRadius: 0.05
+  speed: 4
+  rotationSpeed: 10
+  tileDetectionRadius: 0.5
+--- !u!4 &297537666
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297537664}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1094387877}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &333078695
 GameObject:
   m_ObjectHideFlags: 0
@@ -3389,7 +3438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c31b3543fd4a4656bcfebbce1b8f163, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1094387874}
+  player: {fileID: 297537664}
   self: {fileID: 677795987}
 --- !u!4 &677795989
 Transform:
@@ -4154,7 +4203,7 @@ MonoBehaviour:
   targetScript: {fileID: 543135252}
   toggleButton: {fileID: 769973815}
   buttonText: {fileID: 605708714}
-  perso: {fileID: 1094387874}
+  perso: {fileID: 297537664}
   RubiksCube: {fileID: 543135251}
 --- !u!1 &783545897
 GameObject:
@@ -6550,7 +6599,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 297537666}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
         type: 3}
@@ -6585,7 +6634,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
         type: 3}
@@ -6595,7 +6644,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
         type: 3}
@@ -6610,7 +6659,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
         type: 3}
@@ -6643,10 +6692,6 @@ PrefabInstance:
     - {fileID: -8700617353114198275, guid: e5b21d2774eb9dd4fa13f87322ca9dcb, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1094387877}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
         type: 3}
       insertIndex: -1
@@ -6712,20 +6757,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1094387877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!4 &1094387877 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e5b21d2774eb9dd4fa13f87322ca9dcb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1094387873}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1094387874}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18d97ff5e61cfb4bb295a7025b20f5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionRadius: 0.05
-  speed: 0.0002
 --- !u!1 &1109966380 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2103669851732163159, guid: b363e942e3eeb134b9b4466041e8171c,
@@ -7062,7 +7099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myButton: {fileID: 1213012795}
   RubiksCube: {fileID: 543135258}
-  perso: {fileID: 1094387874}
+  perso: {fileID: 297537664}
   Canvas: {fileID: 1024741677}
   BackToMenu: {fileID: 1525905572}
   scriptToggler: {fileID: 769973818}
@@ -12041,7 +12078,7 @@ SceneRoots:
   - {fileID: 1324039999}
   - {fileID: 786461103}
   - {fileID: 543135250}
-  - {fileID: 1094387873}
+  - {fileID: 297537666}
   - {fileID: 677795989}
   - {fileID: 744108182}
   - {fileID: 655744083}

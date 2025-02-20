@@ -9,6 +9,7 @@ TagManager:
   - QDSUIToggleBorderlessButton
   - EmptyObject
   - Point
+  - Tuile
   layers:
   - Default
   - TransparentFX

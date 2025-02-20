@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 2453004668315720055}
   m_Layer: 0
   m_Name: t_left
-  m_TagString: Untagged
+  m_TagString: Tuile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 6346173466255006516}
   m_Layer: 0
   m_Name: turn_bottom_right
-  m_TagString: Untagged
+  m_TagString: Tuile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
