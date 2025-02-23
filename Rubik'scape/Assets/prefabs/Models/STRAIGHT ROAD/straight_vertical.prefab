@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 5918269798400038413}
   m_Layer: 0
   m_Name: straight_vertical
-  m_TagString: Untagged
+  m_TagString: Tuile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
