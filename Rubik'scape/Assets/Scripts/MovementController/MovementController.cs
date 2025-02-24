@@ -68,11 +68,11 @@ public class MovementController : MonoBehaviour {
     if (!isWaitingForInput || directionCollider == null) return;
 
     // Cherche et désactive le point Multi où se trouve le personnage
-    var multiPoint = availablePoints.FirstOrDefault(p => 
-        p.CompareTag("Multi") && 
+    var multiPoint = availablePoints.FirstOrDefault(p =>
+        p.CompareTag("Multi") &&
         Vector3.Distance(transform.position, p.position) < 0.1f
     );
-    
+
     if (multiPoint != null) {
         Debug.Log("Désactivation du point Multi");
         multiPoint.gameObject.SetActive(false);
@@ -84,7 +84,7 @@ public class MovementController : MonoBehaviour {
 
     // Fait avancer légèrement le personnage dans la direction du collider
     Vector3 direction = (directionCollider.transform.position - transform.position).normalized;
-    transform.position += direction * 0.015f; // Déplacement de 60% de la distance entre points
+    transform.position += direction * 0.025f;
 
     // On laisse la logique existante prendre le relais
     target = null;
@@ -96,7 +96,7 @@ public class MovementController : MonoBehaviour {
         while (target != null && Vector3.Distance(transform.position, tempTarget.transform.position) > 0.1f) {
             yield return null;
         }
-        
+
         // Une fois arrivé, on détruit la cible temporaire
         if (tempTarget != null) {
             target = null;
