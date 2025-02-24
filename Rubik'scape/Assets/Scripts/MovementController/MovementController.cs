@@ -91,19 +91,6 @@ public class MovementController : MonoBehaviour {
     FindNextTarget();
 }
 
-    private System.Collections.IEnumerator DestroyTargetWhenReached(GameObject tempTarget) {
-        // Attend que le personnage soit très proche de la cible
-        while (target != null && Vector3.Distance(transform.position, tempTarget.transform.position) > 0.1f) {
-            yield return null;
-        }
-
-        // Une fois arrivé, on détruit la cible temporaire
-        if (tempTarget != null) {
-            target = null;
-            Destroy(tempTarget);
-        }
-    }
-
     private void ShowAvailableDirections() {
         SetButtonsActive(false);
 
