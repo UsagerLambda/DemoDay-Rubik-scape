@@ -11,6 +11,7 @@ TagManager:
   - Point
   - Tuile
   - Multi
+  - Victory
   layers:
   - Default
   - TransparentFX

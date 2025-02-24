@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Linq;
+using System;
+using System.Threading;
 
 public class MovementController : MonoBehaviour {
     [Header("Movement Settings")]
@@ -15,11 +17,13 @@ public class MovementController : MonoBehaviour {
     public Button frontArrow;
     public Button leftArrow;
     public Button rightArrow;
+    public GameObject VictoryUI;
 
     [Header("Collision Boxes")]
     public BoxCollider frontCollider;
     public BoxCollider leftCollider;
     public BoxCollider rightCollider;
+    
 
     private Transform target;
     private List<Transform> availablePoints = new List<Transform>();
@@ -31,6 +35,9 @@ public class MovementController : MonoBehaviour {
     private bool isRotating;
     private bool isMoving;
     private bool isInitialized;
+    public BackToSelect backToSelectScript;
+    private bool isVictoryTriggered = false;
+
 
     private void Awake() {
         Debug.Log("Vérification des boutons :");
@@ -139,6 +146,10 @@ public class MovementController : MonoBehaviour {
             return;
         }
 
+        if (isVictoryTriggered) {
+        return;
+    }
+
         CheckCurrentTile();
 
         if (target == null && !isWaitingForInput) {
@@ -170,6 +181,7 @@ public class MovementController : MonoBehaviour {
         targetRotation = transform.rotation;
         availablePoints.Clear();
         SetButtonsActive(false);
+        isVictoryTriggered = false;
     }
 
     private void CheckCurrentTile() {
@@ -214,7 +226,7 @@ public class MovementController : MonoBehaviour {
 
     private void GatherAllPoints() {
         availablePoints.Clear();
-        foreach (var tag in new[] { "Point", "Multi" }) {
+        foreach (var tag in new[] { "Point", "Multi", "Victory" }) {
             var points = GameObject.FindGameObjectsWithTag(tag);
             foreach (var point in points) {
                 availablePoints.Add(point.transform);
@@ -260,7 +272,13 @@ public class MovementController : MonoBehaviour {
         if (Vector3.Distance(transform.position, target.position) < 0.1f) {
             transform.position = target.position;
 
-            if (target.CompareTag("Multi")) {
+            if (target.CompareTag("Victory")) {
+                if (target && target.CompareTag("Victory")) {
+                    Debug.Log("Désactivation du point Victory");
+                    target.gameObject.SetActive(false);
+                }
+                HandleVictory();
+            } else if (target.CompareTag("Multi")) {
                 target.gameObject.SetActive(true);
                 isWaitingForInput = true;
                 HandleUserInput();
@@ -274,6 +292,31 @@ public class MovementController : MonoBehaviour {
                 target = null;
                 FindNextTarget();
             }
+        }
+    }
+
+    private void HandleVictory() {
+        Debug.Log("Victory point reached! Activating victory sequence...");
+
+        isVictoryTriggered = true;
+
+        if (VictoryUI != null) {
+            VictoryUI.SetActive(true);
+
+            // Utiliser Invoke au lieu de Thread.Sleep
+            Invoke("ReturnToSelect", 5f);
+        } else {
+            Debug.LogError("VictoryUI reference is missing!");
+            ReturnToSelect();
+        }
+    }
+
+    private void ReturnToSelect() {
+        Debug.Log("Returning to select screen...");
+        if (backToSelectScript != null) {
+            backToSelectScript.OnButtonClick();
+        } else {
+            Debug.LogError("BackToSelect script reference is missing!");
         }
     }
 
