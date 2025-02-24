@@ -18,6 +18,10 @@ public class BackToSelect : MonoBehaviour
     }
 
     void OnButtonClick() {
+        if (scriptToggler.isRunning != false) {
+            scriptToggler.ToggleScript();
+        }
+
         if (IsDescendant(perso.transform, RubiksCube))
         {
             perso.transform.parent = null; // Détache perso de son parent
