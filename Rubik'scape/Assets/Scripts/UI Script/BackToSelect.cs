@@ -9,6 +9,7 @@ public class BackToSelect : MonoBehaviour
     public GameObject Canvas;
     public GameObject BackToMenu;
     public ScriptToggler scriptToggler;
+    public GameObject VictoryUI;
 
     void Start() {
         if (myButton != null)
@@ -24,6 +25,7 @@ public class BackToSelect : MonoBehaviour
 
         if (IsDescendant(perso.transform, RubiksCube))
         {
+            Debug.Log("PERSO PAS ENCORE DETACHER");
             perso.transform.parent = null; // Détache perso de son parent
             Debug.Log("perso a été détaché. Nouveau parent : " + (perso.transform.parent != null ? perso.transform.parent.name : "Aucun (null)"));
         }
@@ -35,6 +37,9 @@ public class BackToSelect : MonoBehaviour
         BackToMenu.SetActive(false);
         Canvas.SetActive(true);
         RemoveAllChildren();
+        if (VictoryUI.activeSelf) {
+            VictoryUI.SetActive(false);
+        }
         Debug.Log("Done");
     }
 
