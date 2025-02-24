@@ -18,7 +18,7 @@ public class BackToSelect : MonoBehaviour
         }
     }
 
-    void OnButtonClick() {
+    public void OnButtonClick() {
         if (scriptToggler.isRunning != false) {
             scriptToggler.ToggleScript();
         }
