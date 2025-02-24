@@ -13,6 +13,7 @@ public class PlayerStartPosition : MonoBehaviour
             Debug.Log("success: Start was found");
             player.SetActive(true);
             player.transform.position = StartTile.transform.position;
+            player.transform.rotation = StartTile.transform.rotation;
             player.transform.parent = StartTile.transform;
             self.SetActive(false);
 

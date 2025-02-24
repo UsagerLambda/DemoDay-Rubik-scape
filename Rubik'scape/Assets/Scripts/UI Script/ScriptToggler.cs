@@ -46,10 +46,11 @@ public class ScriptToggler : MonoBehaviour
             movementController.enabled = false; // Désactive le mouvement
             perso.transform.position = startTile.transform.position;
             perso.transform.parent = startTile.transform;
+            perso.transform.rotation = startTile.transform.rotation;
 
             foreach (Transform child in RubiksCube.GetComponentsInChildren<Transform>(true)) {
-            if (child.CompareTag("Point") && !child.gameObject.activeSelf) {
-                child.gameObject.SetActive(true);
+                if ((child.CompareTag("Point") || child.CompareTag("Multi")) && !child.gameObject.activeSelf) {
+                    child.gameObject.SetActive(true);
             }
         }
         }
