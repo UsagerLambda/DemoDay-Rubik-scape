@@ -8,9 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/main.unity
     guid: a93a6e71c69b6284ca8cfd06cf15e977
-  - enabled: 1
-    path: Assets/Scenes/GamePlayScene.unity
-    guid: a8ddc3a83c7ea4daaaae835be6f90849
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 199b496b2cbb92046a2cc9770370ac66,
       type: 2}
