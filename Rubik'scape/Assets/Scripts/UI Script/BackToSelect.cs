@@ -21,7 +21,8 @@ public class BackToSelect : MonoBehaviour
     public void OnButtonClick() {
         if (scriptToggler.isRunning != false) {
             scriptToggler.ToggleScript();
-        };
+        }
+
         if (IsDescendant(perso.transform, RubiksCube))
         {
             Debug.Log("PERSO PAS ENCORE DETACHER");
