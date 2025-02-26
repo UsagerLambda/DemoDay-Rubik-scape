@@ -10,6 +10,7 @@ public class BackToSelect : MonoBehaviour
     public GameObject BackToMenu;
     public ScriptToggler scriptToggler;
     public GameObject VictoryUI;
+    public Transform ContentContainer;
 
     void Start() {
         if (myButton != null)
@@ -34,12 +35,17 @@ public class BackToSelect : MonoBehaviour
             Debug.Log("perso n'était pas un enfant de RubiksCube.");
         }
         perso.SetActive(false);
-        BackToMenu.SetActive(false);
+
+        if (BackToMenu.activeSelf) {
+            BackToMenu.SetActive(false);
+        }
+
         Canvas.SetActive(true);
         RemoveAllChildren();
         if (VictoryUI.activeSelf) {
             VictoryUI.SetActive(false);
         }
+        EnableAllLevelButtons();
         Debug.Log("Done");
     }
 
@@ -60,5 +66,15 @@ public class BackToSelect : MonoBehaviour
             Destroy(child.gameObject);
         }
         RubiksCube.gameObject.SetActive(false);
+    }
+
+    private void EnableAllLevelButtons() {
+        foreach (Transform child in ContentContainer) {
+            Button button = child.transform
+                .Find("SelectButton/LevelSelectorButton")
+                .GetComponent<Button>();
+
+            button.interactable = true;
+        }
     }
 }
