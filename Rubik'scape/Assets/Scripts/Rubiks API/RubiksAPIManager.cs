@@ -8,7 +8,7 @@ public class RubiksAPIManager : MonoBehaviour
 {
     public Transform ContentContainer;
     public FetchCanvas dataReceiver { get; set; }
-    private const string BaseUrl = "https://rubiks-server.onrender.com";
+    private const string BaseUrl = "https://game.rubikscape.online";
 
     public IEnumerator GetAllLevels()
     {
