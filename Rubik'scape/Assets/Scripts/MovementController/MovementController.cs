@@ -36,6 +36,7 @@ public class MovementController : MonoBehaviour {
     private bool isMoving;
     private bool isInitialized;
     public BackToSelect backToSelectScript;
+    public GameObject GameplayCanvas;
     private bool isVictoryTriggered = false;
 
 
@@ -297,7 +298,7 @@ public class MovementController : MonoBehaviour {
 
     private void HandleVictory() {
         Debug.Log("Victory point reached! Activating victory sequence...");
-
+        GameplayCanvas.SetActive(false);
         isVictoryTriggered = true;
 
         if (VictoryUI != null) {

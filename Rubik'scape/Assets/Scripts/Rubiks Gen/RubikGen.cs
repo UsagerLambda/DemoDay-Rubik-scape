@@ -25,7 +25,7 @@ public class RubikGen : MonoBehaviour
 
         GenerateRubiksCube();
         ApplyPlanePrefabs();
-        
+
         isInitialized = true;
     }
 
@@ -49,6 +49,10 @@ public class RubikGen : MonoBehaviour
             }
         }
         isInitialized = false;
+    }
+
+    public bool IsInitialized() {
+        return isInitialized;
     }
 
     void GenerateRubiksCube() {

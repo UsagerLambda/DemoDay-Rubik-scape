@@ -60,6 +60,7 @@ public class FetchCanvas : MonoBehaviour
 
     private void OnPlayButtonClick(string levelId) // fonction appelée au click du joueur sur le bouton
     {
+        DisableAllLevelButtons();
         StartCoroutine(LoadLevelCoroutine(levelId)); // Appel la fonction pour faire un appel API Get pour un niveau spécifique
     }
     private IEnumerator LoadLevelCoroutine(string levelId) { // fonction coroutine pour attendre le resultat de l'appel GetLevel
@@ -68,6 +69,28 @@ public class FetchCanvas : MonoBehaviour
         }
         else {
             Debug.LogError("apiManager is null in LoadLevelCoroutine"); // si le lien avec RubiksAPIManager n'existe pas
+        }
+    }
+
+    private void DisableAllLevelButtons() {
+        // Parcourir tous les enfants du conteneur
+        foreach (Transform child in ContentContainer) {
+            // Trouver le bouton dans chaque carte
+            Button button = child.transform
+                .Find("SelectButton/LevelSelectorButton")
+                .GetComponent<Button>();
+
+            button.interactable = false;
+        }
+    }
+
+    private void EnableAllLevelButtons() {
+        foreach (Transform child in ContentContainer) {
+            Button button = child.transform
+                .Find("SelectButton/LevelSelectorButton")
+                .GetComponent<Button>();
+
+            button.interactable = true;
         }
     }
 
@@ -100,8 +123,26 @@ public class FetchCanvas : MonoBehaviour
         rubikGenerator.SetActive(true);
         ChangeMode.SetActive(true);
 
-        rubikGen.InitializeRubiksCube(level.name, level.cube_size, facesData);
-        SetPlayerPosition.SetActive(true);
+        StartCoroutine(CheckUntilInitialized(level.name, level.cube_size, facesData));
+    }
+
+    IEnumerator CheckUntilInitialized(string name, int cube_size, int[][] facesData) {
+        float timeout = 5f;
+        rubikGen.InitializeRubiksCube(name, cube_size, facesData);
+
+        float timer = 0f;
+        while (!rubikGen.IsInitialized() && timer < timeout) {
+            Debug.Log("waiting...");
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (rubikGen.IsInitialized()) {
+            SetPlayerPosition.SetActive(true);
+        } else {
+            Debug.LogError("Failed to initialize RubikGen properly");
+            EnableAllLevelButtons();
+        }
     }
 }
 
