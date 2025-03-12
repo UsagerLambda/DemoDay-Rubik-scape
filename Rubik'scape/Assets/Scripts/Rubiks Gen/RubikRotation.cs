@@ -260,7 +260,7 @@ public class RubikRotation : MonoBehaviour
 
         GameObject rotationParent = new GameObject("RotationParent");
         rotationParent.transform.position = transform.position;
-        rotationParent.transform.rotation = transform.rotation;
+        rotationParent.transform.rotation = transform.rotation;  // Correction importante
 
         // Collecter les cubes de la tranche
         List<GameObject> sliceCubes = new List<GameObject>();
