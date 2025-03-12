@@ -1,0 +1,3 @@
+[submodule "rubiks-server"]
+	path = rubiks-server
+	url = https://github.com/UsagerLambda/rubiks-server.git
