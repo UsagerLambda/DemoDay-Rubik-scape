@@ -248,8 +248,8 @@ public class RubikRotation : MonoBehaviour
         float absY = Mathf.Abs(position.y);
         float absZ = Mathf.Abs(position.z);
 
-        if (absX > absY && absX > absZ) return 0; // X est dominant
-        if (absY > absX && absY > absZ) return 1; // Y est dominant
+        if (absX > absY || absX > absZ) return 0; // X est dominant
+        if (absY > absX || absY > absZ) return 1; // Y est dominant
         return 2; // Z est dominant
     }
 
@@ -260,10 +260,11 @@ public class RubikRotation : MonoBehaviour
 
         GameObject rotationParent = new GameObject("RotationParent");
         rotationParent.transform.position = transform.position;
+        rotationParent.transform.rotation = transform.rotation;  // Correction importante
 
         // Collecter les cubes de la tranche
         List<GameObject> sliceCubes = new List<GameObject>();
-        
+
         switch (cmd.type)
         {
             case SliceType.Y:
@@ -272,7 +273,7 @@ public class RubikRotation : MonoBehaviour
                         if (rubikGen.cubeArray[x, cmd.slice, z] != null)
                             sliceCubes.Add(rubikGen.cubeArray[x, cmd.slice, z]);
                 break;
-                
+
             case SliceType.X:
                 for (int y = 0; y < rubikGen.cubeSize; y++)
                     for (int z = 0; z < rubikGen.cubeSize; z++)

@@ -2654,7 +2654,7 @@ PrefabInstance:
     - target: {fileID: 5331994187752839443, guid: efb798694618643f0a40d5b97122991e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 5331994187752839443, guid: efb798694618643f0a40d5b97122991e,
         type: 3}
@@ -3239,7 +3239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27385ccdb38f14a87ae367d00978f4cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 0, z: 0.35}
+  offset: {x: 0, y: 0, z: 0.4}
 --- !u!1 &655744082
 GameObject:
   m_ObjectHideFlags: 0
@@ -6383,7 +6383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27385ccdb38f14a87ae367d00978f4cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 0, z: 0.35}
+  offset: {x: 0, y: 0, z: 0.4}
 --- !u!1 &1041447823
 GameObject:
   m_ObjectHideFlags: 0
@@ -7859,6 +7859,7 @@ MonoBehaviour:
   BackToMenu: {fileID: 1525905572}
   scriptToggler: {fileID: 769973818}
   VictoryUI: {fileID: 1074650670}
+  ContentContainer: {fileID: 1531430314}
 --- !u!1 &1235414524
 GameObject:
   m_ObjectHideFlags: 0
@@ -9618,7 +9619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27385ccdb38f14a87ae367d00978f4cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: -0.2, z: 0.4}
+  offset: {x: 0, y: -0.15, z: 0.4}
 --- !u!1 &1530215166
 GameObject:
   m_ObjectHideFlags: 0
@@ -12130,6 +12131,7 @@ MonoBehaviour:
   leftCollider: {fileID: 1476630344}
   rightCollider: {fileID: 19186772}
   backToSelectScript: {fileID: 1213012798}
+  GameplayCanvas: {fileID: 1525905572}
 --- !u!4 &1805885136
 Transform:
   m_ObjectHideFlags: 0
@@ -13437,6 +13439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4128271923f63454bb6b59d9d33e9453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ContentContainer: {fileID: 1531430314}
 --- !u!4 &2114174421
 Transform:
   m_ObjectHideFlags: 0
