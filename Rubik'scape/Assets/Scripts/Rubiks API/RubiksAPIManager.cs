@@ -1,19 +1,35 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine.UI;
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Linq;
+
+public class AcceptAllCertificates : CertificateHandler
+{
+    protected override bool ValidateCertificate(byte[] certificateData)
+    {
+        // Accepter tous les certificats
+        return true;
+    }
+}
 
 public class RubiksAPIManager : MonoBehaviour
 {
     public Transform ContentContainer;
     public FetchCanvas dataReceiver { get; set; }
-    private const string BaseUrl = "https://game.rubikscape.online";
+    private const string BaseUrl = "https://localhost:8080";
 
     public IEnumerator GetAllLevels()
     {
         using (UnityWebRequest request = UnityWebRequest.Get($"{BaseUrl}/get_all_levels"))
         {
+            request.certificateHandler = new AcceptAllCertificates();
             yield return request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success)
@@ -38,6 +54,7 @@ public class RubiksAPIManager : MonoBehaviour
     {
         using (UnityWebRequest request = UnityWebRequest.Get($"{BaseUrl}/get_level/{levelId}"))
         {
+            request.certificateHandler = new AcceptAllCertificates();
             yield return request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success)
